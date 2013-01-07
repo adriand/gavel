@@ -1,0 +1,20 @@
+%header.bar-title
+  %a.button-prev{:href => "/", :'data-transition' => "slide-out"} Back
+  %h1.title Settings
+.content
+  .content-padded
+    %form#settings
+      %input{:type => "text", :name => "first_name", :placeholder => "First name"}
+      %input{:type => "text", :name => "last_name", :placeholder => "Last name"}
+      %input{:type => "text", :name => "primary_phone", :placeholder => "Primary phone"}
+      %input{:type => "text", :name => "secondary_phone", :placeholder => "Secondary phone (optional)"}
+      %input{:type => "text", :name => "address", :placeholder => "Address"}
+        %select{:name => "city"}
+          %option Hamilton
+          %option Ancaster
+          %option Dundas
+          %option Flamborough
+          %option Glanbrook
+          %option Stoney Creek
+      %input{:type => "text", :name => "postal_code", :placeholder => "Postal code"}
+      %a#save.button.button-block Save

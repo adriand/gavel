@@ -1,5 +1,9 @@
 require 'sinatra'
 
 get '/' do
-  "Hello, world"
+  haml :index
+end
+
+get '/settings' do
+  haml :settings
 end

@@ -1,0 +1,32 @@
+<script type="text/javascript">
+	$(function() {
+    window.addEventListener('push', pushListener);
+    function pushListener(detail) {
+      var destinationURL = detail['detail']['state']['url'];
+      destinationURL = destinationURL.replace(/http:\/\/.*\//,''); // get the pure destination only
+      handleViewChange(destinationURL);
+    }
+
+    function handleViewChange(view) {
+      switch (view) {
+        case 'settings':
+          settingsViewLoaded();
+          break;
+      }
+    }
+
+    function settingsViewLoaded() {
+      // load from local storage
+      $("form#settings").find('input, select').each(function(index,item) {
+        $(item).val(localStorage[$(item).attr('name')]);
+      });
+
+      $("#save").on('click', function(e) {
+        console.log("Saving to local storage");
+        $("form#settings").find('input, select').each(function(index,item) {
+          localStorage[$(item).attr('name')] = $(item).val();
+        });
+      });
+    }
+	});
+</script>
