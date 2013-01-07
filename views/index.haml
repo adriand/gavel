@@ -4,4 +4,37 @@
   
 .content
   .content-padded
-    %p Hello there
+    %form#complaint
+      %p
+        %strong Location
+      %input{:type => "text", :name => "address", :placeholder => "Address"}
+        %select{:name => "city"}
+          %option Hamilton
+          %option Ancaster
+          %option Dundas
+          %option Flamborough
+          %option Glanbrook
+          %option Stoney Creek
+      %p
+        %strong Complaint
+      %select{:name => "complaint"}
+        %option Snow and Ice
+        %option Barking Dogs
+        %option Business Licences
+        %option Dog feces
+        %option Exterior Property Maintenance
+        %option Garbage and Debris
+        %option Garbage dumping
+        %option Illegal use of property
+        %option Interior Property Maintenance
+        %option Long grass
+        %option Noise
+        %option Potential Vacant Building
+        %option Signs
+        %option Other
+      %textarea{:placeholder => "Comments / Additional details", :rows => 3}
+      %a#save.button.button-block Next
+    %p
+      All of the rules that apply to
+      %a{:href => "http://www.hamilton.ca/CityDepartments/CorporateServices/ITS/Forms+in+Development/Municipal+Law+Enforcement+Online+Complaint+Form.htm", :target => "_"} the City of Hamilton bylaw enforcement form
+      apply here.
