@@ -1,16 +1,11 @@
 <script type="text/javascript">
   function Complaint() {
+    var self = this;
+
     this.streetAddress = "";
     this.city = "";
     this.complaint = "";
     this.comments = "";
-
-    this.formattedComplaint = function () {
-      var formatted = this.complaint + " at " + this.streetAddress + " in " + this.city + ".";
-      if (this.comments != '')
-        formatted += " " + this.comments;
-      return formatted;
-    }
 
     this.complaintDefinition = function() {
       var definitions = {
@@ -22,11 +17,29 @@
         "Illegal use of property" : "(zoning)",
         "Interior Property Maintenance" : "(rental properties) ",
         "Long grass" : "(more than 8 inches)",
-        "Noise" : "(only noise during the day due to construction projects, large machines or equipment etc.)",
+        "Noise" : "(only noise during the day due to construction projects, large machines or equipment etc.)"
       }
-      return definitions[this.complaint] || '';
+      return definitions[self.complaint] || '';
     }
 
+    this.formattedComplaint = function() {
+      var formatted = self.complaint;
+      if (self.complaintDefinition() != '')
+        formatted += " " + self.complaintDefinition();
+      return formatted;
+    }
+
+    this.cityDefinition = function() {
+      var cityDefinitions = {
+        "Hamilton" : "Hamilton",
+        "Ancaster" : "Hamilton/ former municipality of Ancaster",
+        "Dundas" : "Hamilton/ former municipality of Dundas",
+        "Flamborough" : "Hamilton/ former municipality of Flamborough",
+        "Glanbrook" : "Hamilton/ former municipality  of Glanbrook",
+        "Stoney Creek" : "Hamilton/ former municipality  of Stoney Creek"
+      }
+      return cityDefinitions[self.city];
+    }
   }
 
 	$(function() {
@@ -88,9 +101,7 @@
     }
 
     function confirmViewLoaded() {
-      $("#complaint").html(activeComplaint.complaint);
-      if (activeComplaint.complaintDefinition() != '')
-        $("#complaint").html($("#complaint").html() + " " + activeComplaint.complaintDefinition());
+      $("#complaint").html(activeComplaint.formattedComplaint);
       $("#streetAddress").html(activeComplaint.streetAddress + ", " + activeComplaint.city);
       if (activeComplaint.comments != '') {
         $("#comments-label").show();
@@ -100,6 +111,12 @@
         $("#comments-label").hide();
         $("#comments").hide();
       }
+
+      $("#submit-complaint").on('tap', function(e) {
+        $.post('/submit-complaint', { sample: 'payload' }, function(response) {
+          // process response
+        });
+      });
     }
 
     var activeComplaint = new Complaint();
