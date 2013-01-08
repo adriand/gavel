@@ -7,7 +7,7 @@
     %form#complaint
       %p
         %strong Location
-      %input#address{:type => "text", :name => "address", :placeholder => "Address"}
+      %input#address{:type => "text", :name => "streetAddress", :placeholder => "123 Fake St"}
         %select{:name => "city"}
           %option Hamilton
           %option Ancaster
@@ -32,9 +32,9 @@
         %option Potential Vacant Building
         %option Signs
         %option Other
-      %textarea{:placeholder => "Comments / Additional details", :rows => 3}
-      %a#save.button.button-block Next
+      %textarea{:placeholder => "Comments / Additional details", :rows => 3, :name => "comments"}
+      %a#next-complaint.button.button-block{:href => "/confirm", :'data-transition' => "slide-in"} Next
     %p
       All of the rules that apply to
       %a{:href => "http://www.hamilton.ca/CityDepartments/CorporateServices/ITS/Forms+in+Development/Municipal+Law+Enforcement+Online+Complaint+Form.htm", :target => "_"} the City of Hamilton bylaw enforcement form
-      apply here.
+      apply here (it's the same form, after all!)
