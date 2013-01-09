@@ -106,6 +106,7 @@
       });
 
       $("#save").on('click', function(e) {
+        e.preventDefault();
         $("form#settings").find('input, select').each(function(index,item) {
           settings.attributes[$(item).attr('name')] = $(item).val();
         });
