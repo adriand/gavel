@@ -1,6 +1,7 @@
 require 'sinatra'
 require 'net/http'
 require 'uri'
+require 'pry'
 
 get '/' do
   haml :index
@@ -15,8 +16,6 @@ get '/confirm' do
 end
 
 post '/submit-complaint' do
-  uri = URI.parse("http://factore.ca")
-
   # Check the README for details on how the city wants its form fields submitted.
   post_params = {
     "__VIEWSTATE" => 'dDwxNzUyNDY0MDEzO3Q8O2w8aTwzPjs+O2w8dDw7bDxpPDU+O2k8MTE+O2k8MTM+Oz47bDx0PDtsPGk8MD47aTwyPjs+O2w8dDxwPGw8VGV4dDs+O2w8XDxkaXYgY2xhc3M9InN1Ym5hdiJcPg0KICBcPHVsXD4NCiAgICBcPGxpXD4NCiAgICAgIFw8YSBocmVmPSIvQ2l0eURlcGFydG1lbnRzL0NvbW11bml0eVNlcnZpY2UvIlw+DQogICAgICAgIFw8c3Ryb25nXD5Db21tdW5pdHkgU2VydmljZXNcPC9zdHJvbmdcPg0KICAgICAgXDwvYVw+DQogICAgXDwvbGlcPg0KICAgIFw8dWxcPg0KICAgIFw8L3VsXD4NCiAgICBcPGxpXD4NCiAgICAgIFw8YSBocmVmPSIvQ2l0eURlcGFydG1lbnRzL0NvbnRhY3RVcy8iXD4NCiAgICAgICAgXDxzdHJvbmdcPkNvbnRhY3QgVXNcPC9zdHJvbmdcPg0KICAgICAgXDwvYVw+DQogICAgXDwvbGlcPg0KICAgIFw8dWxcPg0KICAgIFw8L3VsXD4NCiAgICBcPGxpXD4NCiAgICAgIFw8YSBocmVmPSIvQ2l0eURlcGFydG1lbnRzL0NvcnBvcmF0ZVNlcnZpY2VzLyJcPg0KICAgICAgICBcPHN0cm9uZ1w+Q29ycG9yYXRlIFNlcnZpY2VzXDwvc3Ryb25nXD4NCiAgICAgIFw8L2FcPg0KICAgIFw8L2xpXD4NCiAgICBcPHVsXD4NCiAgICBcPC91bFw+DQogICAgXDxsaVw+DQogICAgICBcPGEgaHJlZj0iL0NpdHlEZXBhcnRtZW50cy9FbWVyZ2VuY3lTZXJ2aWNlcy8iXD4NCiAgICAgICAgXDxzdHJvbmdcPkVtZXJnZW5jeSBTZXJ2aWNlc1w8L3N0cm9uZ1w+DQogICAgI' + 
@@ -44,6 +43,33 @@ post '/submit-complaint' do
     "COHShell:_ctl0:qQ_COMMENTS" => params[:complaintComments],
     "COHShell:_ctl0:Button1" => "Submit Form"
   }
-  response = Net::HTTP.post_form(uri, post_params)
-  puts "#{response.status} #{response.body}"
+
+  begin
+    # uri = URI.parse("http://factore.ca/comments")
+    uri = URI.parse("http://www.hamilton.ca/Hamilton.Portal/Templates/COHShell.aspx?NRMODE=Published&NRORIGINALURL=%2fCityDepartments%2fCorporateServices%2fITS%2fForms%2bin%2bDevelopment%2fMunicipal%2bLaw%2bEnforcement%2bOnline%2bComplaint%2bForm%2ehtm&NRNODEGUID=%7b4319AA7C-7E5E-4D65-9F46-CCBEC9AB86E0%7d&NRCACHEHINT=Guest")
+    http = Net::HTTP.new(uri.host, uri.port)
+    request = Net::HTTP::Post.new(uri.request_uri)
+    request.set_form_data(post_params)
+    response = http.request(request)
+    if response.code == "200"
+      parse_success_response(response)
+    else
+      status 500
+      body "Error"
+    end
+  rescue StandardError, Timeout::Error => e
+    status 500
+    body "Error"
+  end
+end
+
+def parse_success_response(response)
+  # the success page uses javascript to hide the main form and show the success form (thank you, diff!)
+  if response.body =~ /document\.getElementById\('mainform'\)\.style\.display = 'none';/
+    status 200
+    body "Success"
+  else
+    status 500
+    body "There was a problem submitting your complaint on the City's website."
+  end
 end

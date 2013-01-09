@@ -1,13 +1,20 @@
 GEM
   remote: http://rubygems.org/
   specs:
+    coderay (1.0.8)
     daemons (1.1.9)
     eventmachine (1.0.0)
     haml (3.1.7)
+    method_source (0.8.1)
+    pry (0.9.10)
+      coderay (~> 1.0.5)
+      method_source (~> 0.8)
+      slop (~> 3.3.1)
     rack (1.4.1)
     sinatra (1.1.0)
       rack (~> 1.1)
       tilt (~> 1.1)
+    slop (3.3.3)
     thin (1.5.0)
       daemons (>= 1.0.9)
       eventmachine (>= 0.12.6)
@@ -19,5 +26,6 @@ PLATFORMS
 
 DEPENDENCIES
   haml
+  pry
   sinatra (= 1.1.0)
   thin

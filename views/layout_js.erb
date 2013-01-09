@@ -1,4 +1,16 @@
 <script type="text/javascript">
+  function cityDefinition(city) {
+    var definitions = {
+      "Hamilton" : "Hamilton",
+      "Ancaster" : "Hamilton/ former municipality of Ancaster",
+      "Dundas" : "Hamilton/ former municipality of Dundas",
+      "Flamborough" : "Hamilton/ former municipality of Flamborough",
+      "Glanbrook" : "Hamilton/ former municipality  of Glanbrook",
+      "Stoney Creek" : "Hamilton/ former municipality  of Stoney Creek"
+    }
+    return definitions[city];
+  }
+
   function Complaint() {
     var self = this;
 
@@ -29,16 +41,39 @@
       return formatted;
     }
 
-    this.cityDefinition = function() {
-      var cityDefinitions = {
-        "Hamilton" : "Hamilton",
-        "Ancaster" : "Hamilton/ former municipality of Ancaster",
-        "Dundas" : "Hamilton/ former municipality of Dundas",
-        "Flamborough" : "Hamilton/ former municipality of Flamborough",
-        "Glanbrook" : "Hamilton/ former municipality  of Glanbrook",
-        "Stoney Creek" : "Hamilton/ former municipality  of Stoney Creek"
-      }
-      return cityDefinitions[self.city];
+    this.formattedCity = function() {
+      return cityDefinition(this.city);
+    }
+  }
+
+  function Settings() {
+    var self = this;
+
+    this.attributes = {
+      "first_name" : "",
+      "last_name" : "",
+      "email" : "",
+      "primary_phone" : "",
+      "secondary_phone" : "",
+      "address" : "",
+      "city" : "",
+      "postal_code" : ""
+    }
+
+    this.load = function() {
+      $.each(self.attributes, function(key, value) {
+        self.attributes[key] = localStorage[key];
+      });
+    }
+
+    this.save = function() {
+      $.each(self.attributes, function(key, value) {
+        localStorage[key] = value;
+      });
+    }
+
+    this.formattedCity = function() {
+      return cityDefinition(this.attributes['city']);
     }
   }
 
@@ -66,15 +101,15 @@
     }
 
     function settingsViewLoaded() {
-      // load from local storage
       $("form#settings").find('input, select').each(function(index,item) {
-        $(item).val(localStorage[$(item).attr('name')]);
+        $(item).val(settings.attributes[$(item).attr('name')]);
       });
 
       $("#save").on('click', function(e) {
         $("form#settings").find('input, select').each(function(index,item) {
-          localStorage[$(item).attr('name')] = $(item).val();
+          settings.attributes[$(item).attr('name')] = $(item).val();
         });
+        settings.save();
       });
     }
 
@@ -113,13 +148,29 @@
       }
 
       $("#submit-complaint").on('tap', function(e) {
-        $.post('/submit-complaint', { sample: 'payload' }, function(response) {
+        var params = {
+          "first_name"              : settings.attributes['first_name'],
+          "address"                 : settings.attributes['address'],
+          "last_name"               : settings.attributes['last_name'],
+          "postal_code"             : settings.attributes['postal_code'],
+          "primary_phone"           : settings.attributes['primary_phone'],
+          "city"                    : settings.formattedCity(),
+          "secondary_phone"         : settings.attributes['secondary_phone'],
+          "email"                   : settings.attributes['email'],
+          "complaintStreetAddress"  : activeComplaint.streetAddress,
+          "complaintCity"           : activeComplaint.formattedCity(),
+          "complaintComplaint"      : activeComplaint.formattedComplaint(),
+          "complaintComments"       : activeComplaint.comments
+        }
+        $.post('/submit-complaint', params, function(response) {
           // process response
         });
       });
     }
 
     var activeComplaint = new Complaint();
+    var settings = new Settings();
+    settings.load();
     indexViewLoaded();
 	});
 </script>
