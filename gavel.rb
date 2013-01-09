@@ -45,7 +45,6 @@ post '/submit-complaint' do
   }
 
   begin
-    # uri = URI.parse("http://factore.ca/comments")
     uri = URI.parse("http://www.hamilton.ca/Hamilton.Portal/Templates/COHShell.aspx?NRMODE=Published&NRORIGINALURL=%2fCityDepartments%2fCorporateServices%2fITS%2fForms%2bin%2bDevelopment%2fMunicipal%2bLaw%2bEnforcement%2bOnline%2bComplaint%2bForm%2ehtm&NRNODEGUID=%7b4319AA7C-7E5E-4D65-9F46-CCBEC9AB86E0%7d&NRCACHEHINT=Guest")
     http = Net::HTTP.new(uri.host, uri.port)
     request = Net::HTTP::Post.new(uri.request_uri)
@@ -54,22 +53,18 @@ post '/submit-complaint' do
     if response.code == "200"
       parse_success_response(response)
     else
-      status 500
-      body "Error"
+      "Error"
     end
   rescue StandardError, Timeout::Error => e
-    status 500
-    body "Error"
+    "Error"
   end
 end
 
 def parse_success_response(response)
   # the success page uses javascript to hide the main form and show the success form (thank you, diff!)
   if response.body =~ /document\.getElementById\('mainform'\)\.style\.display = 'none';/
-    status 200
-    body "Success"
+    "Success"
   else
-    status 500
-    body "There was a problem submitting your complaint on the City's website."
+    "There was a problem submitting your complaint on the City's website."
   end
 end

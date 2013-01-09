@@ -163,6 +163,7 @@
           "complaintComments"       : activeComplaint.comments
         }
         $.post('/submit-complaint', params, function(response) {
+          alert(response);
           // process response
         });
       });
