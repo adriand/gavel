@@ -11,7 +11,17 @@ The confirmation page, which shows the address, the complaint and complaint deta
 
 ## To-do
 
+* Fire off an AJAX request to Heroku when the app first loads, to spin up the instance of the app
+* Don't have a type of complaint auto-filled out (OK)
+* Reset the form after successful submission
+* Record anonymized complaints on the web service
+* Don't allow duplicate complaints on the web service
+* Validate the settings and the complaint (OK)
+* Show some kind of disclaimer when the app first loads (put it on the settings page)
 
+Later:
+
+* front-end caching using cache manifest
 
 ## Form Fields For POSTing To City Site
 
