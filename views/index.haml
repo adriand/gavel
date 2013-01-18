@@ -7,14 +7,16 @@
     %form#complaint
       %p
         %strong Location
-      %input#address{:type => "text", :name => "streetAddress", :placeholder => "123 Fake St"}
-        %select{:name => "city"}
-          %option Hamilton
-          %option Ancaster
-          %option Dundas
-          %option Flamborough
-          %option Glanbrook
-          %option Stoney Creek
+      %input#address{:type => "text", :name => "streetAddress", :placeholder => "123 Fake St", :style => "width: 80%; float: left;"}
+      %a#locate.button.button-block{:href => "#", :style => "width: 16%; height: 14px; float: right;"}
+        %img{:src => "/arrow.png"}
+      %select{:name => "city"}
+        %option Hamilton
+        %option Ancaster
+        %option Dundas
+        %option Flamborough
+        %option Glanbrook
+        %option Stoney Creek
       %p
         %strong Complaint
       %select{:name => "complaint"}

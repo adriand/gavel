@@ -144,7 +144,10 @@
     }
 
     function indexViewLoaded() {
-      navigator.geolocation.getCurrentPosition(fillInAddress);
+      $("#locate").on('tap', function(e) {
+        e.preventDefault();
+        navigator.geolocation.getCurrentPosition(fillInAddress);
+      });
 
       // when the user taps next, save the current form field values in the Complaint object
       $("#next-complaint").on('tap', function(e) {
@@ -156,11 +159,10 @@
 
     function confirmViewLoaded() {
       if (activeComplaint.valid() && settings.valid()) {
-        $("#invalid-complaint").hide();
         $("#submit-complaint").show();
       } else {
         $("#submit-complaint").hide();
-        $("#invalid-complaint").show();
+        alert('Your settings and/or complaint are currently invalid.  Ensure you have entered valid information in Settings and that you have entered a location and a type of complaint to proceed.');
       }
 
       $("#complaint").html(activeComplaint.formattedComplaint);
