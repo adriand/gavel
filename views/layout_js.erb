@@ -203,12 +203,6 @@
     settings.load();
     indexViewLoaded();
 
-    // wake up the Heroku instance
-    console.log("hello");
-    $.get('/wakeup', function(data) {
-      console.log(data);
-    });
-
     if (!settings.valid())
       alert("Your settings are not valid.  Tap Settings to enter your information now.");
 	});
