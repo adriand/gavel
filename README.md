@@ -61,3 +61,7 @@ The city's website wants the form fields to be submitted as follows:
     COHShell:_ctl0:qQ_OCOMP: Other complaint text.
     COHShell:_ctl0:qQ_COMMENTS: Additional comments.
     COHShell:_ctl0:Button1:Submit Form
+
+# Cache
+
+http://www.html5rocks.com/en/tutorials/appcache/beginner/

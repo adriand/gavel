@@ -1,5 +1,5 @@
 CACHE MANIFEST
-# rev 1
+# rev 7
 
 CACHE:
 ratchet.js
@@ -8,3 +8,8 @@ ratchet.css
 gavel.css
 arrow.png
 
+NETWORK:
+settings
+confirm
+wakeup
+submit-complaint

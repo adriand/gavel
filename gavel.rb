@@ -7,6 +7,11 @@ get '/' do
   haml :index
 end
 
+# just to wake up Heroku instance when the app is first loaded
+get '/wakeup' do
+  "Woke up!"
+end
+
 get '/settings' do
   haml :settings
 end
