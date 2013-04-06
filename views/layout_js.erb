@@ -136,12 +136,24 @@
       var latitude = position.coords.latitude;
       var longitude = position.coords.longitude;
 
-      $.getJSON('http://maps.googleapis.com/maps/api/geocode/json?sensor=true&latlng=' + latitude + ',' + longitude, function(data){
+      function success(data){
         var streetNumber = data['results'][0]['address_components'][0]['long_name'];
         var streetName = data['results'][0]['address_components'][1]['long_name'];
         $("#address").val(streetNumber + ' ' + streetName);
 
         $("#locate img").attr("src", "/arrow.png");
+      }
+
+      function error(){
+        alert('Could not determine your location.');
+        $("#locate img").attr("src", "/arrow.png");
+      }
+
+      $.ajax({
+        dataType: 'json',
+        url: 'http://maps.googleapis.com/maps/api/geocode/json?sensor=true&latlng=' + latitude + ',' + longitude,
+        success: success,
+        error: error
       });
     }
 
