@@ -163,7 +163,7 @@
 
         $("#locate img").attr("src", "/spinner.gif");
         navigator.geolocation.getCurrentPosition(fillInAddress, function(){
-          alert('Error: Could not get current location.');
+          alert('Could not get current location.');
           $("#locate img").attr("src", "/arrow.png");
         });
       });
