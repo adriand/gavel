@@ -3,6 +3,10 @@ require 'net/http'
 require 'uri'
 require 'pry'
 
+configure :production do
+  require 'newrelic_rpm'
+end
+
 get '/' do
   haml :index
 end
